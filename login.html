@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
+    <link rel="stylesheet" href="login_css.css">
+</head>
+
+<body>
+
+
+    <h2>Login Page</h2>
+
+    <div class="Container">
+
+        <form id="shorter-form" onsubmit="return validation()">
+            <div>
+                <label for="email"> Email Address</label>
+                <input type="text" name="name" id="email" autocomplete="username">
+                <span id="emailError" class="error"></span>
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+                <span id="passwordError" class="error"></span>
+            </div>
+
+            <div class="button-side">
+                <input type="checkbox" name="checkbox"> Remember Me
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- OR Line -->
+        <div class="center-box">
+            <div class="or-line"><span>OR</span></div>
+        </div>
+
+        <!-- Google Login -->
+        <div id="g_id_onload" data-client_id="500104829142-ijeqhpkmr2j3fa61t1kquld3ukqu49bh.apps.googleusercontent.com"
+            data-callback="handleCredentialResponse">
+        </div>
+
+        <div class="google-login">
+            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-shape="pill"
+                data-text="signin_with" data-logo_alignment="left">
+            </div>
+        </div>
+
+        <div class="center-box">
+            <a href="Registration">Registration</a> |
+            <a href="re_password">Lost your password</a>
+        </div>
+    </div>
+
+
+    <script>
+        function validation() {
+            let email = document.getElementById('email').value.trim();
+            let password = document.getElementById('password').value.trim();
+
+            let emailError = document.getElementById('emailError');
+            let passwordError = document.getElementById('passwordError');
+
+            emailError.innerHTML = "";
+            passwordError.innerHTML = "";
+
+            let emailregex = /^[a-z0-9._%+-]+@[a-zA-Z0-9]+\.[a-z]{2,3}$/;
+            let passwordregex = /^[a-zA-Z0-9]{4,16}$/;
+
+            let valid = true;
+
+            if (!emailregex.test(email)) {
+                emailError.innerHTML = "Enter a valid email";
+                valid = false;
+            }
+
+            if (!passwordregex.test(password)) {
+                passwordError.innerHTML = "Password must contain uppercase, lowercase & number";
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        document.getElementById('shorter-form').addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!validation()) return;
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch('http://localhost:3002/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    alert(data.message);
+                    return;
+                }
+
+                alert("login successfully");
+                console.log(data);
+
+            } catch (err) {
+                console.error(err);
+                alert("Server error");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="Registration_css.css">
+</head>
+
+<body>
+
+    <form class="container" id="registration-form" action="/register">
+        <h1>Create a new account</h1>
+
+        <label>Username</label>
+        <input type="text" id="Username" name="Username">
+        <span id="userError" class="error"></span><br><br>
+
+        <label>Email</label>
+        <input type="email" id="email" name="Email">
+        <span id="emailError" class="error"></span><br><br>
+
+        <label>Password</label>
+        <input type="password" id="password" name="Password">
+        <span id="passError" class="error"></span><br><br>
+
+        <label>Birthday</label>
+        <input type="date" id="DOB" name="Dob">
+        <span id="birthError" class="error"></span><br><br>
+       
+        <button type="submit" value="submit">Sign Up</button>
+    </form>
+
+    <script>
+        function validation() {
+            let valid = true;
+
+            const Username = document.getElementById('Username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const Birthday = document.getElementById('DOB').value;
+
+            document.getElementById('userError').innerHTML = "";
+            document.getElementById('emailError').innerHTML = "";
+            document.getElementById('passError').innerHTML = "";
+            document.getElementById('birthError').innerHTML = "";
+
+            if (Username === "") {
+                document.getElementById('userError').innerHTML = "Enter username";
+                valid = false;
+            }
+
+            if (email === "") {
+                document.getElementById('emailError').innerHTML = "Enter email";
+                valid = false;
+            }
+
+            if (password === "") {
+                document.getElementById('passError').innerHTML = "Enter password";
+                valid = false;
+            }
+
+            if (Birthday === "") {
+                document.getElementById('birthError').innerHTML = "Select birthday";
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        // Submit using fetch
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!validation()) return;
+
+            const data = {
+                Username: document.getElementById('Username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                Birthday: document.getElementById('DOB').value
+            };
+
+              
+        });
+    </script>
+
+</body>
+
+</html>
